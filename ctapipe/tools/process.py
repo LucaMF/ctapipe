@@ -124,6 +124,10 @@ class ProcessorTool(Tool):
             "DataWriter.write_index_tables",
             "generate PyTables index tables for the parameter and image datasets",
         ),
+        "camera-frame": (
+            {"ImageProcessor": {"use_telescope_frame": False}},
+            "Use camera frame for image parameters instead of telescope frame",
+        ),
     }
 
     classes = (
@@ -190,6 +194,22 @@ class ProcessorTool(Tool):
 
         return self.write.write_parameters or self.should_compute_dl2
 
+    @property
+    def should_calibrate(self):
+        if self.force_recompute_dl1:
+            True
+
+        if (
+            self.write.write_images
+            and DataLevel.DL1_IMAGES not in self.event_source.datalevels
+        ):
+            return True
+
+        if self.should_compute_dl1:
+            return DataLevel.DL1_IMAGES not in self.event_source.datalevels
+
+        return False
+
     def _write_processing_statistics(self):
         """write out the event selection stats, etc."""
         # NOTE: don't remove this, not part of DataWriter
@@ -229,7 +249,9 @@ class ProcessorTool(Tool):
         ):
 
             self.log.debug("Processessing event_id=%s", event.index.event_id)
-            self.calibrate(event)
+
+            if self.should_calibrate:
+                self.calibrate(event)
 
             if self.should_compute_dl1:
                 self.process_images(event)
