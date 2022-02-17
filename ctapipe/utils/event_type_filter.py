@@ -15,7 +15,7 @@ class EventTypeFilter(Component):
         trait=Enum(list(EventType) + [t.value for t in EventType]),
         default_value=None,
         allow_none=True,
-        help="The allowed types. Set to None to allowe all types.",
+        help="The allowed types. Set to None to allow all types.",
     ).tag(config=True)
 
     def __init__(self, *args, **kwargs):
