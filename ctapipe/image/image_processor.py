@@ -90,7 +90,7 @@ class ImageProcessor(TelescopeComponent):
         self.clean = ImageCleaner.from_name(
             self.image_cleaner_type, subarray=subarray, parent=self
         )
-        self.modify = ImageModifier(parent=self)
+        self.modify = ImageModifier(subarray=subarray, parent=self)
 
         self.check_image = ImageQualityQuery(parent=self)
         if self.use_telescope_frame:
