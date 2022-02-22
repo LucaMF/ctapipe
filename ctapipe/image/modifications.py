@@ -1,4 +1,3 @@
-from abc import abstractmethod
 import numpy as np
 from numba import njit
 from ..core.component import TelescopeComponent
