@@ -61,9 +61,6 @@ class ImageProcessor(TelescopeComponent):
     image_cleaner_type = create_class_enum_trait(
         base_class=ImageCleaner, default_value="TailcutsImageCleaner"
     )
-    image_modifier_type = create_class_enum_trait(
-        base_class=ImageModifier, default_value="NSBNoiseAdder"
-    )
     use_telescope_frame = Bool(
         default_value=True,
         help="Whether to calculate parameters in the telescope or camera frame",
@@ -93,9 +90,7 @@ class ImageProcessor(TelescopeComponent):
         self.clean = ImageCleaner.from_name(
             self.image_cleaner_type, subarray=subarray, parent=self
         )
-        self.modify = ImageModifier.from_name(
-            self.image_modifier_type, subarray=subarray, parent=self
-        )
+        self.modify = ImageModifier(parent=self)
 
         self.check_image = ImageQualityQuery(parent=self)
         if self.use_telescope_frame:

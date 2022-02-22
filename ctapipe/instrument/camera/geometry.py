@@ -641,6 +641,10 @@ class CameraGeometry:
         return self.neighbor_matrix_sparse.A
 
     @lazyproperty
+    def max_neighbors(self):
+        return self.neighbor_matrix.sum(axis=1).max()
+
+    @lazyproperty
     def neighbor_matrix_sparse(self):
         if self._neighbors is not None:
             return self._neighbors

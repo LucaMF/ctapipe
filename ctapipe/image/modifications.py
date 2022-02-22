@@ -94,24 +94,6 @@ def smear_psf_randomly(
 
 class ImageModifier(TelescopeComponent):
     """
-    Abstract class for configurable image modifying algorithms. Use
-    ``ImageModifier.from_name()`` to construct an instance of a particular algorithm
-    """
-
-    @abstractmethod
-    def __call__(self, tel_id: int, image: np.ndarray) -> np.ndarray:
-        """
-        Modifies a given image
-
-        Returns
-        -------
-        np.ndarray
-            modified image
-        """
-
-
-class NSBNoiseAdder(ImageModifier):
-    """
     Component to tune simulated background to
     overserved NSB values.
     A differentiation between bright and dim pixels is taking place
@@ -145,17 +127,13 @@ class NSBNoiseAdder(ImageModifier):
     ).tag(config=True)
 
     def __call__(self, tel_id, image, rng=None):
-        # TODO: how to get max_neighbors?
-        # This might be the safest way (including the decision if diagonal neighbors
-        # count for square pixels)
         geom = self.subarray.tel[tel_id].camera.geometry
-        max_neighbors = geom.neighbor_matrix.sum(axis=1).max()
         smeared_image = smear_psf_randomly(
             image=image,
             fraction=self.smear_factor.tel[tel_id],
             indices=geom.neighbor_matrix_sparse.indices,
             indptr=geom.neighbor_matrix_sparse.indptr,
-            smear_probabilities=np.full(max_neighbors, 1 / max_neighbors),
+            smear_probabilities=np.full(geom.max_neighbors, 1 / geom.max_neighbors),
         )
 
         noise = np.where(

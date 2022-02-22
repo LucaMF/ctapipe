@@ -40,7 +40,7 @@
                 ["enough_charge", "lambda im: im.sum() > 50"]
             ]
         },
-        "NSBNoiseAdder": {
+        "ImageModifier": {
             "smear_factor": [
                 ["type", "*", 0.2]
             ],
