@@ -18,7 +18,6 @@
     },
     "ImageProcessor": {
         "image_cleaner_type": "TailcutsImageCleaner",
-        "image_modifier_type": "NSBNoiseAdder",
         "TailcutsImageCleaner": {
             "picture_threshold_pe": [
                 ["type", "*", 10.0],

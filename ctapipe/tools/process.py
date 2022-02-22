@@ -63,7 +63,6 @@ class ProcessorTool(Tool):
         ("t", "allowed-tels"): "EventSource.allowed_tels",
         ("m", "max-events"): "EventSource.max_events",
         "image-cleaner-type": "ImageProcessor.image_cleaner_type",
-        "image-modifier-type": "ImageProcessor.image_modifier_type",
     }
 
     flags = {
